@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -50,8 +51,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+
         initcontrol();
         facebookLogin();
+        Log.d("State", "onCreate: "+ commonSharePreference.read("State"));
+
 
 
 
