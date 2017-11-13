@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">TakeMeHomeDemo</string>
+    <string name="facebook_app_id">513228809041606</string>
+    <string name="fb_login_protocol_scheme">fb513228809041606</string>
+    <string name="title_activity_user__drawer_option">User_Drawer_option</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="Home_fragment">HomeFragment</string>
+    <string name="Driver_fragment">DriverFragment</string>
+    <string name="title_activity_user_main_page_bot_nav">UserMainPage_bot_nav</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="select_date">Select Date</string>
+    <string name="end_location">End Location</string>
+    <string name="Button_search">Search</string>
+</resources>
