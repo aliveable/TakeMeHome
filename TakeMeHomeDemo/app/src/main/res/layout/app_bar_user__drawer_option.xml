@@ -20,6 +20,4 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_user__drawer_option" />
-
 </android.support.design.widget.CoordinatorLayout>
