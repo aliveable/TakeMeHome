@@ -133,7 +133,9 @@ public class User_Drawer_option extends AppCompatActivity
                             GraphResponse response) {
                         // Application code
                         final JSONObject jsonObject = response.getJSONObject();
-                        setname(jsonObject.opt("name").toString());
+                        setname(jsonObject.optString("name").toString());
+                        setid(jsonObject.optString("id"));
+                        setLink(jsonObject.optString("link"));
                         Log.v("output", object.toString());
                         Log.v("output2", jsonObject.opt("name").toString());
                         Log.v("output", userProfile.getName());
@@ -152,6 +154,14 @@ public class User_Drawer_option extends AppCompatActivity
         userProfile.setName(input_name);
         name.setText(userProfile.getName().toString());
         Log.v("output in setnamemethod", userProfile.getName());
+    }
+
+    public void setid(String id){
+        userProfile.setId(id);
+    }
+
+    public void setLink(String link){
+        userProfile.setLink(link);
     }
 
     @Override
