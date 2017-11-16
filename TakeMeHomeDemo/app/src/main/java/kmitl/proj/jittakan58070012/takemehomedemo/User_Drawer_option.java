@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
@@ -43,15 +44,21 @@ public class User_Drawer_option extends AppCompatActivity
     private View rootView;
     private AccessToken accessToken;
     private FragmentManager fragmentManager;
+
     public void initialFragmentHome(){
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.FragmentContainer,new HomeFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.FragmentContainer,new HomeFragment(), "home").addToBackStack(null).commit();
     }
 
     public void initialFragmentDriver(){
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.FragmentContainer,new DriverFragment()).commit();
+        Fragment fragment = fragmentManager.findFragmentByTag("home");
+
+        fragmentManager.beginTransaction().replace(R.id.FragmentContainer,new DriverFragment()).addToBackStack(null).commit();
+
     }
+
+
 
 
     private TextView mTextMessage;
@@ -172,6 +179,10 @@ public class User_Drawer_option extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+        if (getFragmentManager().getBackStackEntryCount() > 1){
+            getFragmentManager().popBackStack();
+        }
+
     }
 
     @Override
@@ -221,4 +232,5 @@ public class User_Drawer_option extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
