@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         initcontrol();
         facebookLogin();
+
         Log.d("State", "onCreate: "+ commonSharePreference.read("State"));
 
 

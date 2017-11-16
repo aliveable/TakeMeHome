@@ -8,16 +8,4 @@
     tools:context="kmitl.proj.jittakan58070012.takemehomedemo.User_Drawer_option"
     tools:showIn="@layout/app_bar_user__drawer_option">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <include layout="@layout/activity_user_main_page_bot_nav"></include>
-    </android.support.constraint.ConstraintLayout>
-
 </android.support.constraint.ConstraintLayout>

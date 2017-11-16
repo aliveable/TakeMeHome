@@ -22,6 +22,7 @@ android {
 
 dependencies {
     implementation 'com.android.support:support-vector-drawable:26.1.0'
+    implementation 'com.google.firebase:firebase-database:11.0.4'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleCompatible
     compile 'com.android.support:design:26.1.0'
@@ -39,3 +40,6 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0-rc1"
     compile 'com.nex3z:toggle-button-group:1.0.3'
 }
+
+
+apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "139781206796",
+    "firebase_url": "https://takemehomedemo.firebaseio.com",
+    "project_id": "takemehomedemo",
+    "storage_bucket": "takemehomedemo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139781206796:android:c201b503adff7dd0",
+        "android_client_info": {
+          "package_name": "kmitl.proj.jittakan58070012.takemehomedemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139781206796-ekdi77ui5b3mlk22kcf7i8pk17fdot5v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kmitl.proj.jittakan58070012.takemehomedemo",
+            "certificate_hash": "666a7a851c8da92826232d037747df6c7e3254bb"
+          }
+        },
+        {
+          "client_id": "139781206796-ock7mvfv27ckd9imnfnsbd9459q8gf2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD38TeESHSIo9eB2JUoEDtYwhw_7F8ADc8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139781206796-ock7mvfv27ckd9imnfnsbd9459q8gf2c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
