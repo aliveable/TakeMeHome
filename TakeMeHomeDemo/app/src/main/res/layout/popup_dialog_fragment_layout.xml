@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/StartCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/ic_location_on_black_48dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="@string/start_on_create"
+            tools:layout_editor_absoluteX="72dp"
+            tools:layout_editor_absoluteY="27dp" />
+
+        <EditText
+            android:id="@+id/DestinationCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="@string/destination_on_create"
+            android:drawableStart="@mipmap/ic_flag_black_48dp"/>
+
+        <EditText
+            android:id="@+id/Date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/ic_date_range_black_48dp"
+            android:ems="10"
+            android:hint="Date"
+            android:clickable="true"
+            android:focusable="false"
+            android:inputType="text"
+            />
+
+        <EditText
+            android:id="@+id/Time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/ic_access_time_black_48dp"
+            android:ems="10"
+            android:clickable="true"
+            android:focusable="false"
+            android:inputType="text"
+            android:hint="Time"/>
+
+        <EditText
+            android:id="@+id/Contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Contact"
+            android:drawableStart="@mipmap/ic_phone_black_48dp"/>
+
+        <EditText
+            android:id="@+id/editText10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:text="Discription" />
+
+        <Button
+            android:id="@+id/Apply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Apply" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
