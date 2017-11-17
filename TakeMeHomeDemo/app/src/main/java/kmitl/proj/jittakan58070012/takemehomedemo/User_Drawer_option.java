@@ -47,14 +47,14 @@ public class User_Drawer_option extends AppCompatActivity
 
     public void initialFragmentHome(){
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.FragmentContainer,new HomeFragment(), "home").addToBackStack(null).commit();
+        fragmentManager.beginTransaction().add(R.id.FragmentContainer,new HomeFragment(), "home").commit();
     }
 
     public void initialFragmentDriver(){
         fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag("home");
 
-        fragmentManager.beginTransaction().replace(R.id.FragmentContainer,new DriverFragment()).addToBackStack(null).commit();
+        fragmentManager.beginTransaction().remove(fragment).replace(R.id.FragmentContainer,new DriverFragment()).addToBackStack(null).commit();
 
     }
 
@@ -179,9 +179,8 @@ public class User_Drawer_option extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-        if (getFragmentManager().getBackStackEntryCount() > 1){
-            getFragmentManager().popBackStack();
-        }
+
+
 
     }
 
