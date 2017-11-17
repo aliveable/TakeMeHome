@@ -10,21 +10,29 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import kmitl.proj.jittakan58070012.takemehomedemo.MainActivity;
 import kmitl.proj.jittakan58070012.takemehomedemo.R;
+import kmitl.proj.jittakan58070012.takemehomedemo.User_Drawer_option;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.NewDrivecourse;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.userProfile;
 
@@ -36,12 +44,12 @@ import kmitl.proj.jittakan58070012.takemehomedemo.model.userProfile;
 
 
 
-public class addDestinationPopupDialogFragment extends Fragment implements View.OnClickListener {
+public class addDestinationPopupDialogFragment extends Fragment{
 
     private Calendar myCalendar;
     private EditText edittext;
     private EditText editTime;
-    private userProfile userProfile;
+
     private DatePickerDialog.OnDateSetListener date;
     private List<NewDrivecourse> newDrivecourseslist;
 
@@ -59,7 +67,7 @@ public class addDestinationPopupDialogFragment extends Fragment implements View.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.popup_dialog_fragment_layout,container,false);
+        final View rootView = inflater.inflate(R.layout.popup_dialog_fragment_layout,container,false);
 
 
 
@@ -79,6 +87,14 @@ public class addDestinationPopupDialogFragment extends Fragment implements View.
             }
         });
 
+        Button apply_BTN = rootView.findViewById(R.id.Apply);
+        apply_BTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                apply(rootView);
+                backToDriver();
+            }
+        });
 
         return rootView;
     }
@@ -99,9 +115,9 @@ public class addDestinationPopupDialogFragment extends Fragment implements View.
                                           int monthOfYear, int dayOfMonth) {
 
                         edittext.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
                     }
                 }, startYear, startMonth, startDay);
+
         datePickerDialog.show();
 
     }
@@ -114,12 +130,14 @@ public class addDestinationPopupDialogFragment extends Fragment implements View.
 
         edittext = v.findViewById(R.id.Time);
         TimePickerDialog mTimePicker;
+
         mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 edittext.setText( selectedHour + ":" + selectedMinute);
             }
         }, hour, minute, true);//Yes 24 hour time
+
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
 
@@ -127,8 +145,9 @@ public class addDestinationPopupDialogFragment extends Fragment implements View.
     }
 
     public void apply(View v){
+
         NewDrivecourse newDrivecourse = new NewDrivecourse();
-        newDrivecourseslist = null;
+        newDrivecourseslist = new ArrayList<>();
 
         EditText start = v.findViewById(R.id.StartCreate);
         EditText des  = v.findViewById(R.id.DestinationCreate);
@@ -155,14 +174,22 @@ public class addDestinationPopupDialogFragment extends Fragment implements View.
         newDrivecourse.setPlate(licenseplate.getText().toString());
         newDrivecourse.setColor(color.getText().toString());
         newDrivecourseslist.add(newDrivecourse);
-        userProfile.setDriverCourse(newDrivecourseslist);
 
+        User_Drawer_option.userProfile.setDriverCourse(newDrivecourseslist);
+
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
+        userRef.push().setValue(User_Drawer_option.userProfile);
 
     }
 
-    @Override
-    public void onClick(View v) {
-        apply(v);
+
+    public void backToDriver() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        getFragmentManager().popBackStack();
+        transaction.replace(R.id.FragmentContainer,new DriverFragment());
+        transaction.commit();
+
     }
+
 }
 

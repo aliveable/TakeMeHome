@@ -47,7 +47,6 @@
             android:excludeFromRecents="true"
             android:finishOnTaskLaunch="true"
             android:label="@string/title_activity_user__drawer_option"
-            android:windowSoftInputMode="adjustPan"
         android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
