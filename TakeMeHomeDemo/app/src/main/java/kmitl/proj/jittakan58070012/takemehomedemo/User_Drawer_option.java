@@ -39,7 +39,7 @@ public class User_Drawer_option extends AppCompatActivity
     private Intent intent;
     private CommonSharePreference commonSharePreference;
 
-    private userProfile userProfile;
+    public static userProfile userProfile;
 
     private View rootView;
     private AccessToken accessToken;
@@ -49,6 +49,8 @@ public class User_Drawer_option extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.FragmentContainer,new HomeFragment(), "home").commit();
     }
+
+
 
     public void initialFragmentDriver(){
         fragmentManager = getSupportFragmentManager();
@@ -169,6 +171,7 @@ public class User_Drawer_option extends AppCompatActivity
 
     public void setLink(String link){
         userProfile.setLink(link);
+
     }
 
     @Override
