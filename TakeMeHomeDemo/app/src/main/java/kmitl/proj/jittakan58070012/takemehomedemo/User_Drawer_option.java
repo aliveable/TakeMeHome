@@ -162,6 +162,7 @@ public class User_Drawer_option extends AppCompatActivity
         TextView name = findViewById(R.id.Name);
         userProfile.setName(input_name);
         name.setText(userProfile.getName().toString());
+        commonSharePreference.save("username",userProfile.getName());
         Log.v("output in setnamemethod", userProfile.getName());
     }
 

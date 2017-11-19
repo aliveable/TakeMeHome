@@ -21,8 +21,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,9 +33,11 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import kmitl.proj.jittakan58070012.takemehomedemo.CommonSharePreference;
 import kmitl.proj.jittakan58070012.takemehomedemo.MainActivity;
 import kmitl.proj.jittakan58070012.takemehomedemo.R;
 import kmitl.proj.jittakan58070012.takemehomedemo.User_Drawer_option;
+import kmitl.proj.jittakan58070012.takemehomedemo.model.Constant;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.NewDrivecourse;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.userProfile;
 
@@ -49,9 +54,12 @@ public class addDestinationPopupDialogFragment extends Fragment{
     private Calendar myCalendar;
     private EditText edittext;
     private EditText editTime;
-
+    private CommonSharePreference commonSharePreference;
     private DatePickerDialog.OnDateSetListener date;
     private List<NewDrivecourse> newDrivecourseslist;
+    private DatabaseReference userRef;
+    private NewDrivecourse newDrivecourse;
+    private String key;
 
 
     public static addDestinationPopupDialogFragment newInstance() {
@@ -69,8 +77,8 @@ public class addDestinationPopupDialogFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.popup_dialog_fragment_layout,container,false);
 
-
-
+        commonSharePreference = new CommonSharePreference(getContext());
+        Log.d("CheckCreate", "onCreateView: " + commonSharePreference.read("create"));
         edittext = rootView.findViewById(R.id.Date);
         edittext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,8 +99,11 @@ public class addDestinationPopupDialogFragment extends Fragment{
         apply_BTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apply(rootView);
-                backToDriver();
+
+                    apply(rootView);
+                    backToDriver();
+
+
             }
         });
 
@@ -146,8 +157,8 @@ public class addDestinationPopupDialogFragment extends Fragment{
 
     public void apply(View v){
 
-        NewDrivecourse newDrivecourse = new NewDrivecourse();
-        newDrivecourseslist = new ArrayList<>();
+        newDrivecourse = new NewDrivecourse();
+
 
         EditText start = v.findViewById(R.id.StartCreate);
         EditText des  = v.findViewById(R.id.DestinationCreate);
@@ -173,12 +184,40 @@ public class addDestinationPopupDialogFragment extends Fragment{
         newDrivecourse.setModel(carModel.getText().toString());
         newDrivecourse.setPlate(licenseplate.getText().toString());
         newDrivecourse.setColor(color.getText().toString());
-        newDrivecourseslist.add(newDrivecourse);
 
-        User_Drawer_option.userProfile.setDriverCourse(newDrivecourseslist);
+        userRef = FirebaseDatabase.getInstance().getReference("User");
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
-        userRef.push().setValue(User_Drawer_option.userProfile);
+        if (Constant.createState.equals("notcreate")){
+
+            Constant.createState = "create";
+            newDrivecourseslist = new ArrayList<>();
+            newDrivecourseslist.add(newDrivecourse);
+            User_Drawer_option.userProfile.setDriverCourse(newDrivecourseslist);
+            userRef.push().setValue(Constant.userProfile);
+
+        }else{
+            userRef = FirebaseDatabase.getInstance().getReference("User");
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot userdata : dataSnapshot.getChildren()){
+                        if (userdata.getValue(User_Drawer_option.userProfile.getClass()).getName().equals(commonSharePreference.read("username"))){
+                            User_Drawer_option.userProfile = userdata.child(userdata.getKey()).getValue(User_Drawer_option.userProfile.getClass());
+                            User_Drawer_option.userProfile.getDriverCourse().add(newDrivecourse);
+                            userRef.child(userdata.getKey()).setValue(User_Drawer_option.userProfile.getDriverCourse());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
 
     }
 

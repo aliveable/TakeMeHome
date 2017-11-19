@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.firebase.database.DataSnapshot;
+
 
 public class CommonSharePreference {
     public static final String NAME = "UserInfoApp";
@@ -13,6 +15,8 @@ public class CommonSharePreference {
     public CommonSharePreference(Context context) {
         sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
     }
+
+
 
     public void save(String key, String state) {
         SharedPreferences.Editor editor = sharedPreferences.edit();

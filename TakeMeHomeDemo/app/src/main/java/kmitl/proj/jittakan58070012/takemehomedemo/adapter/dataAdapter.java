@@ -2,6 +2,7 @@ package kmitl.proj.jittakan58070012.takemehomedemo.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,10 +57,14 @@ public class dataAdapter extends RecyclerView.Adapter<Holder> {
         holder.start.setText(this.newDrivecourseList.get(position).getStart());
         holder.destination.setText(this.newDrivecourseList.get(position).getDestination());
         holder.timeanddate.setText(this.newDrivecourseList.get(position).getDate() + "  " + this.newDrivecourseList.get(position).getTime());
+
+        Log.d("CheckOutput", "onBindViewHolder: " + this.newDrivecourseList.get(position).getStart() +" "
+                +  this.newDrivecourseList.get(position).getDestination() + " " + this.newDrivecourseList.get(position).getDate() + "  " + this.newDrivecourseList.get(position).getTime());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+
+        return this.newDrivecourseList.size();
     }
 }

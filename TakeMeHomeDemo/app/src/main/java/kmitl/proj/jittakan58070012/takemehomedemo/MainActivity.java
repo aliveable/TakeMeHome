@@ -16,6 +16,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private CommonSharePreference commonSharePreference;
     public static AccessToken accessToken;
     private AccessTokenTracker accessTokenTracker;
+
 
     @Override
     protected void onResume() {
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initcontrol();
         facebookLogin();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         Log.d("State", "onCreate: "+ commonSharePreference.read("State"));
 
