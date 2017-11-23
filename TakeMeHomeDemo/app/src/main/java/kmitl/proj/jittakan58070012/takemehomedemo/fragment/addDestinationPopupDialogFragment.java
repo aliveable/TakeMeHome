@@ -60,6 +60,7 @@ public class addDestinationPopupDialogFragment extends Fragment{
     private DatabaseReference userRef;
     private NewDrivecourse newDrivecourse;
     private String key;
+    private userProfile userProfile;
 
 
     public static addDestinationPopupDialogFragment newInstance() {
@@ -187,6 +188,7 @@ public class addDestinationPopupDialogFragment extends Fragment{
         newDrivecourse.setPlate(licenseplate.getText().toString());
         newDrivecourse.setColor(color.getText().toString());
 
+        userProfile = new userProfile();
 
         Log.d("in", "apply: "+commonSharePreference.read("createstate"));
         if (commonSharePreference.read("createstate").toString().equals("create")){
@@ -216,6 +218,7 @@ public class addDestinationPopupDialogFragment extends Fragment{
             Constant.createState = "create";
             commonSharePreference.save("createstate","create");
             Log.d("create", "onDataChange: adddrifrag");
+            Log.d("CK LINK ID", "apply: " + User_Drawer_option.userProfile.getId() + "  " + User_Drawer_option.userProfile.getLink());
             newDrivecourseslist = new ArrayList<>();
             newDrivecourseslist.add(newDrivecourse);
             User_Drawer_option.userProfile.setDriverCourse(newDrivecourseslist);

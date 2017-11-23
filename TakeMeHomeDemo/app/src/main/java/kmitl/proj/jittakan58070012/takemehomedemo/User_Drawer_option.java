@@ -54,6 +54,7 @@ public class User_Drawer_option extends AppCompatActivity
     public void initialFragmentHome(){
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.FragmentContainer,new HomeFragment(), "home").commit();
+        commonSharePreference.save("CreateFragState", "Second");
     }
 
 
@@ -100,6 +101,7 @@ public class User_Drawer_option extends AppCompatActivity
         setContentView(R.layout.activity_user__drawer_option);
 
 
+
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -109,6 +111,7 @@ public class User_Drawer_option extends AppCompatActivity
 
         userProfile = new userProfile();
         if (commonSharePreference.read("CreateFragState").equals("First")){
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
             initialFragmentHome();
         }
 
@@ -163,29 +166,7 @@ public class User_Drawer_option extends AppCompatActivity
     }
 
     public void initialcreateuser(){
-        userRef = FirebaseDatabase.getInstance().getReference("User");
-
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot user: dataSnapshot.getChildren()){
-                    if (user.child(commonSharePreference.read("username").toString()).exists()){
-                       commonSharePreference.save("createstate","create");
-                       break;
-                    }
-                    else{
-                        commonSharePreference.save("createstate", "notcreate");
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        commonSharePreference.save("createstate", "notcreate");
 
     }
 

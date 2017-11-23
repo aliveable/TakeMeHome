@@ -46,6 +46,7 @@ public class DriverFragment extends Fragment{
     private CommonSharePreference commonSharePreference;
     private userProfile userprofile;
     private String key;
+    private List<userProfile> listtodisplay;
 
     public DriverFragment() {
         // Required empty public constructor
@@ -94,11 +95,11 @@ public class DriverFragment extends Fragment{
     }
 
     public void Display(View rootview){
-
+        listtodisplay = new ArrayList<>();
         recyclerView = rootview.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userdatakey : dataSnapshot.getChildren()){
@@ -119,7 +120,7 @@ public class DriverFragment extends Fragment{
         userRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                List<userProfile> listtodisplay = new ArrayList<>();
+
                 for (DataSnapshot userdata : dataSnapshot.getChildren()){
                    // Log.d("check", "onDataChange: " + userdata.child(commonSharePreference.read("username").toString()).getKey().toString());
                     Log.d("Check2", "onDataChange: " + userdata.toString());
