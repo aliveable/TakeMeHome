@@ -4,6 +4,7 @@ package kmitl.proj.jittakan58070012.takemehomedemo.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,6 +25,7 @@ import kmitl.proj.jittakan58070012.takemehomedemo.CommonSharePreference;
 import kmitl.proj.jittakan58070012.takemehomedemo.R;
 import kmitl.proj.jittakan58070012.takemehomedemo.User_Drawer_option;
 import kmitl.proj.jittakan58070012.takemehomedemo.adapter.dataAdapter;
+import kmitl.proj.jittakan58070012.takemehomedemo.adapter.allAdapter;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.userProfile;
 
 /**
@@ -33,6 +35,7 @@ public class HomeFragment extends Fragment {
 
     private View rootView;
     private dataAdapter dataadapter;
+    private allAdapter allAdapter;
     private RecyclerView recyclerView;
     private userProfile userprofile;
     private List<userProfile> listtodisplay;
@@ -49,6 +52,7 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         commonSharePreference = new CommonSharePreference(getContext());
         displayall(rootView);
+        //recyclerOnclick();
         return rootView;
     }
 
@@ -60,6 +64,7 @@ public class HomeFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.listHome);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         Log.d("HomeFragCK Name1", "displayall: " + commonSharePreference.read("username"));
+
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
         userRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -75,8 +80,8 @@ public class HomeFragment extends Fragment {
 
                 }
                 Log.d("check Multiuser2", "onChildAdded" + listtodisplay.size());
-                dataadapter = new dataAdapter(getActivity(), listtodisplay);
-                recyclerView.setAdapter(dataadapter);
+                allAdapter = new allAdapter((AppCompatActivity) getActivity(), listtodisplay);
+                recyclerView.setAdapter(allAdapter);
             }
 
             @Override
@@ -97,6 +102,19 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    public void setRecyclerViewlistener(){
+        recyclerView = rootView.findViewById(R.id.listHome);
+    }
+
+    public void recyclerOnclick(){
+        kmitl.proj.jittakan58070012.takemehomedemo.adapter.allAdapter.cardViewsend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("sss", "onClick: ");
             }
         });
     }
