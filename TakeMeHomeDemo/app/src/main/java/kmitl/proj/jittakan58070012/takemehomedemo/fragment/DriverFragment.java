@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.security.Key;
+import java.util.ArrayList;
+import java.util.List;
 
 import kmitl.proj.jittakan58070012.takemehomedemo.CommonSharePreference;
 import kmitl.proj.jittakan58070012.takemehomedemo.R;
@@ -42,6 +45,7 @@ public class DriverFragment extends Fragment{
     private RecyclerView recyclerView;
     private CommonSharePreference commonSharePreference;
     private userProfile userprofile;
+    private String key;
 
     public DriverFragment() {
         // Required empty public constructor
@@ -64,10 +68,10 @@ public class DriverFragment extends Fragment{
                 openAlert();
             }
         });
+        Log.d("check state create", "initialcreateuser: " + commonSharePreference.read("createstate"));
 
 
-
-            Display(rootview);
+        Display(rootview);
 
 
         return rootview;
@@ -94,22 +98,60 @@ public class DriverFragment extends Fragment{
         recyclerView = rootview.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
-        userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot userdatakey : dataSnapshot.getChildren()){
+                    if (userdatakey.getKey().toString().equals(commonSharePreference.read("username"))){
+                        Log.d("headkey", "onDataChange: "+userdatakey.getKey().toString());
+                        key = userdatakey.getKey().toString();
+                        break;
+                    }
 
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        userRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                List<userProfile> listtodisplay = new ArrayList<>();
                 for (DataSnapshot userdata : dataSnapshot.getChildren()){
+                   // Log.d("check", "onDataChange: " + userdata.child(commonSharePreference.read("username").toString()).getKey().toString());
+                    Log.d("Check2", "onDataChange: " + userdata.toString());
+                    Log.d("check Key", "onChildAdded: "+userdata.getKey().toString());
+                    Log.d("check name", "onChildAdded: " + userdata.child("name").getValue());
+                    Log.d("check size", "onChildAdded: ");
+                    //Log.d("List Size", "onDataChange: " + userdata.getValue(User_Drawer_option.userProfile.getClass()));
+                    if (userdata.child("name").getValue().toString().equals(key)) {
+                        User_Drawer_option.userProfile = userdata.getValue(User_Drawer_option.userProfile.getClass());
+                        listtodisplay.add(User_Drawer_option.userProfile);
+                        Log.d("size", "onDataChange: " + User_Drawer_option.userProfile.getDriverCourse().size());
 
-                    Log.d("key", "onDataChange: " + userdata.getKey().toString());
+                    }
 
-                    User_Drawer_option.userProfile = userdata.getValue(User_Drawer_option.userProfile.getClass());
-                    dataadapter = new dataAdapter(getActivity(), User_Drawer_option.userProfile.getDriverCourse());
-
-                    recyclerView.setAdapter(dataadapter);
                 }
 
+                dataadapter = new dataAdapter(getActivity(), listtodisplay);
+                recyclerView.setAdapter(dataadapter);
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
 

@@ -24,6 +24,11 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -44,10 +49,11 @@ public class User_Drawer_option extends AppCompatActivity
     private View rootView;
     private AccessToken accessToken;
     private FragmentManager fragmentManager;
+    private DatabaseReference userRef;
 
     public void initialFragmentHome(){
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.FragmentContainer,new HomeFragment(), "home").commit();
+        fragmentManager.beginTransaction().replace(R.id.FragmentContainer,new HomeFragment(), "home").commit();
     }
 
 
@@ -59,8 +65,6 @@ public class User_Drawer_option extends AppCompatActivity
         fragmentManager.beginTransaction().remove(fragment).replace(R.id.FragmentContainer,new DriverFragment()).addToBackStack(null).commit();
 
     }
-
-
 
 
     private TextView mTextMessage;
@@ -87,8 +91,8 @@ public class User_Drawer_option extends AppCompatActivity
         }
     };
 
-    
-    
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +129,7 @@ public class User_Drawer_option extends AppCompatActivity
 
 
         graph_request();
-        
+        initialcreateuser();
 
         //name.setText(userProfile.getName());
 
@@ -156,6 +160,33 @@ public class User_Drawer_option extends AppCompatActivity
         parameters.putString("fields", "id,name,link");
         request.setParameters(parameters);
         request.executeAsync();
+    }
+
+    public void initialcreateuser(){
+        userRef = FirebaseDatabase.getInstance().getReference("User");
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot user: dataSnapshot.getChildren()){
+                    if (user.child(commonSharePreference.read("username").toString()).exists()){
+                       commonSharePreference.save("createstate","create");
+                       break;
+                    }
+                    else{
+                        commonSharePreference.save("createstate", "notcreate");
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     public void setname(String input_name){

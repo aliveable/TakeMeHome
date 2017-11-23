@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         initcontrol();
         facebookLogin();
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
+        commonSharePreference.save("createstate", "");
         Log.d("State", "onCreate: "+ commonSharePreference.read("State"));
 
 

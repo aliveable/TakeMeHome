@@ -107,6 +107,8 @@ public class addDestinationPopupDialogFragment extends Fragment{
             }
         });
 
+        Log.d("checkaddDia", "onCreateView: "+commonSharePreference.read("username"));
+
         return rootView;
     }
 
@@ -185,27 +187,20 @@ public class addDestinationPopupDialogFragment extends Fragment{
         newDrivecourse.setPlate(licenseplate.getText().toString());
         newDrivecourse.setColor(color.getText().toString());
 
-        userRef = FirebaseDatabase.getInstance().getReference("User");
 
-        if (Constant.createState.equals("notcreate")){
-
-            Constant.createState = "create";
-            newDrivecourseslist = new ArrayList<>();
-            newDrivecourseslist.add(newDrivecourse);
-            User_Drawer_option.userProfile.setDriverCourse(newDrivecourseslist);
-            userRef.push().setValue(Constant.userProfile);
-
-        }else{
+        Log.d("in", "apply: "+commonSharePreference.read("createstate"));
+        if (commonSharePreference.read("createstate").toString().equals("create")){
             userRef = FirebaseDatabase.getInstance().getReference("User");
             userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     for (DataSnapshot userdata : dataSnapshot.getChildren()){
-                        if (userdata.getValue(User_Drawer_option.userProfile.getClass()).getName().equals(commonSharePreference.read("username"))){
-                            User_Drawer_option.userProfile = userdata.child(userdata.getKey()).getValue(User_Drawer_option.userProfile.getClass());
+                        if (userdata.child(commonSharePreference.read("username").toString()).exists()){
+                            User_Drawer_option.userProfile = userdata.child(commonSharePreference.read("username").toString()).child(userdata.getKey()).getValue(User_Drawer_option.userProfile.getClass());
                             User_Drawer_option.userProfile.getDriverCourse().add(newDrivecourse);
                             userRef.child(userdata.getKey()).setValue(User_Drawer_option.userProfile.getDriverCourse());
+                            break;
                         }
                     }
                 }
@@ -215,7 +210,20 @@ public class addDestinationPopupDialogFragment extends Fragment{
 
                 }
             });
+
+        }else{
+            userRef = FirebaseDatabase.getInstance().getReference("User");
+            Constant.createState = "create";
+            commonSharePreference.save("createstate","create");
+            Log.d("create", "onDataChange: adddrifrag");
+            newDrivecourseslist = new ArrayList<>();
+            newDrivecourseslist.add(newDrivecourse);
+            User_Drawer_option.userProfile.setDriverCourse(newDrivecourseslist);
+            userRef.child(commonSharePreference.read("username").toString()).push().setValue(User_Drawer_option.userProfile);
+
         }
+
+
 
 
 

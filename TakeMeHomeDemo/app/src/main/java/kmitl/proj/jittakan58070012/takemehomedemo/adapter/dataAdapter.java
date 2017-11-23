@@ -12,6 +12,7 @@ import java.util.List;
 
 import kmitl.proj.jittakan58070012.takemehomedemo.R;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.NewDrivecourse;
+import kmitl.proj.jittakan58070012.takemehomedemo.model.userProfile;
 
 /**
  * Created by 58070012 on 11/17/2017.
@@ -32,15 +33,13 @@ class  Holder extends RecyclerView.ViewHolder{
 }
 
 public class dataAdapter extends RecyclerView.Adapter<Holder> {
-    private List<NewDrivecourse>newDrivecourseList;
+    private List<userProfile>newDrivecourseList;
     private Activity activity;
     private View view;
 
-    public dataAdapter(Activity activity, List<NewDrivecourse> newDrivecourseList) {
+    public dataAdapter(Activity activity, List<userProfile> newDrivecourseList) {
         this.activity = activity;
         this.newDrivecourseList = newDrivecourseList;
-
-
 
     }
 
@@ -54,12 +53,16 @@ public class dataAdapter extends RecyclerView.Adapter<Holder> {
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        holder.start.setText(this.newDrivecourseList.get(position).getStart());
-        holder.destination.setText(this.newDrivecourseList.get(position).getDestination());
-        holder.timeanddate.setText(this.newDrivecourseList.get(position).getDate() + "  " + this.newDrivecourseList.get(position).getTime());
+//        for (userProfile insidedata : this.newDrivecourseList){
+//           holder.start.setText(insidedata.getDriverCourse().get(0).getStart());
+//           holder.destination.setText(insidedata.getDriverCourse().get(0).getDestination());
+//           holder.timeanddate.setText("Date : "+insidedata.getDriverCourse().get(0).getDate() + " Time : " +insidedata.getDriverCourse().get(0).getTime());
+//        }
+           holder.start.setText(this.newDrivecourseList.get(position).getDriverCourse().get(0).getStart());
+           holder.destination.setText(this.newDrivecourseList.get(position).getDriverCourse().get(0).getDestination());
+           holder.timeanddate.setText("Date : "+this.newDrivecourseList.get(position).getDriverCourse().get(0).getDate() + " Time : " +this.newDrivecourseList.get(position).getDriverCourse().get(0).getTime());
 
-        Log.d("CheckOutput", "onBindViewHolder: " + this.newDrivecourseList.get(position).getStart() +" "
-                +  this.newDrivecourseList.get(position).getDestination() + " " + this.newDrivecourseList.get(position).getDate() + "  " + this.newDrivecourseList.get(position).getTime());
+
     }
 
     @Override
