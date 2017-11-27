@@ -1,5 +1,9 @@
 package kmitl.proj.jittakan58070012.takemehomedemo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 /**
  * Created by Roy on 11/17/2017.
  */
@@ -12,6 +16,10 @@ public class NewDrivecourse {
     String Time;
     String Date;
     int SeatAmount;
+    List<seat> seat = new ArrayList<>();
+
+
+
     int seatCost;
     String Carbrand;
     String Model;
@@ -105,4 +113,18 @@ public class NewDrivecourse {
     public void setColor(String color) {
         Color = color;
     }
+
+    public List<kmitl.proj.jittakan58070012.takemehomedemo.model.seat> getSeat() {
+        return seat;
+    }
+
+    public void setSeat(List<kmitl.proj.jittakan58070012.takemehomedemo.model.seat> seat) {
+        this.seat = seat;
+    }
+
 }
+
+
+
+
+

@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ import java.util.List;
 import kmitl.proj.jittakan58070012.takemehomedemo.CommonSharePreference;
 import kmitl.proj.jittakan58070012.takemehomedemo.R;
 import kmitl.proj.jittakan58070012.takemehomedemo.adapter.allAdapter;
+import kmitl.proj.jittakan58070012.takemehomedemo.adapter.selectAdapter;
+import kmitl.proj.jittakan58070012.takemehomedemo.model.seat;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.userProfile;
 
 /**
@@ -33,17 +36,31 @@ public class userSelectItemFragment extends Fragment {
 
 
     private List<userProfile> listtodisplay;
+    private List<userProfile> display;
     private userProfile userprofile;
     private CommonSharePreference commonSharePreference;
-    private int listposition;
+    public int listposition;
     private int count;
+    private long sameacccount;
+    private int allnodecount;
     private String key;
+    private seat seat;
+    private int check;
+
+    public userSelectItemFragment newInstance(int pos) {
+
+        Bundle args = new Bundle();
+        listposition = pos;
+        userSelectItemFragment fragment = new userSelectItemFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public userSelectItemFragment() {
         // Required empty public constructor
         this.count = 0;
-    }
 
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,11 +72,15 @@ public class userSelectItemFragment extends Fragment {
         return rootView;
     }
 
-    public void display(final int pos, View rootView){
+    public void display(final int pos, final View rootView){
         listtodisplay = new ArrayList<>();
+        display = new ArrayList<>();
         userprofile = new userProfile();
         this.count=0;
+        this.sameacccount = 0;
         this.listposition = pos;
+        this.allnodecount = 0;
+        check = 0;
         final EditText start = rootView.findViewById(R.id.userSelecctStart);
         final EditText des  = rootView.findViewById(R.id.userSelecctDestination);
         final EditText contact  =rootView.findViewById(R.id.userSelecctContact);
@@ -74,38 +95,174 @@ public class userSelectItemFragment extends Fragment {
         final TextView username = rootView.findViewById(R.id.userSelectname);
 
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
+        userRef.keepSynced(true);
+       userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
+               for (DataSnapshot user : dataSnapshot.getChildren()){
+                  // Log.d("countsnapsingle", "onDataChange: " + dataSnapshot.child(user.getKey()).getChildrenCount());
+                   allnodecount += dataSnapshot.child(user.getKey()).getChildrenCount();
+               }
+
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
         userRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+
+                outloop:
                 for (DataSnapshot userdisplay : dataSnapshot.getChildren()){
-                    Log.d("Count CHK", "onChildAdded: " + count+ " ");
-                    if (!userdisplay.child("name").getValue().equals(commonSharePreference.read("username")) && count == listposition){
-                        Log.d("check in", "onChildAdded: in");
-                        userprofile = userdisplay.getValue(userprofile.getClass());
-                        listtodisplay.add(userprofile);
-                        key = userdisplay.getKey();
-                        start.setText(listtodisplay.get(0).getDriverCourse().get(0).getStart());
-                        des.setText(listtodisplay.get(0).getDriverCourse().get(0).getDestination());
-                        contact.setText(listtodisplay.get(0).getDriverCourse().get(0).getContact());
-                        time.setText(listtodisplay.get(0).getDriverCourse().get(0).getTime());
-                        date.setText(listtodisplay.get(0).getDriverCourse().get(0).getDate());
-                        seatAmount.setText(String.valueOf(listtodisplay.get(0).getDriverCourse().get(0).getSeatAmount()));
-                        seatCost.setText(String.valueOf(listtodisplay.get(0).getDriverCourse().get(0).getSeatCost()));
-                        carBrand.setText(listtodisplay.get(0).getDriverCourse().get(0).getCarbrand());
-                        carModel.setText(listtodisplay.get(0).getDriverCourse().get(0).getModel());
-                        licenseplate.setText(listtodisplay.get(0).getDriverCourse().get(0).getPlate());
-                        color.setText(listtodisplay.get(0).getDriverCourse().get(0).getColor());
-                        username.setText(listtodisplay.get(0).getName());
-                        break;
+
+//                    Log.d("Count CHK", "onChildAdded: " + count+ " " + listposition);
+//                    Log.d("check user", "onChildAdded: " +userdisplay.getValue() + "   " + commonSharePreference.read("username"));
+
+                    if (!userdisplay.child("name").getValue().equals(commonSharePreference.read("username"))){
+                        //Log.d("snapcount", "onChildAdded: " + dataSnapshot.getChildrenCount());
+                            userprofile = userdisplay.getValue(userprofile.getClass());
+                            listtodisplay.add(userprofile);
+
+
+                        Log.d("check in", "onChildAdded: in" + key +  "   " + userdisplay.getValue() + "  " +dataSnapshot.getChildrenCount() + "  " + userdisplay.getChildrenCount()  );
+
+                        Log.d("loopkeycheck", "onChildAdded: "+"Key :" + key+"  "+ userdisplay.getKey() + "   Size: " + listtodisplay.size());
+
+                        if (check == 0 ){
+                            outkeyloop:
+                            for (DataSnapshot seat: userdisplay.getChildren()){
+                                Log.d("check", "onChildAdded: " + seat.getValue());
+                                for (DataSnapshot seatin : seat.getChildren()){
+
+                                    for (DataSnapshot seatmoreinside : seatin.getChildren()){
+
+                                        for (DataSnapshot fuckinginside : seatmoreinside.getChildren()) {
+                                            //Log.d("check3", "onChildAdded: " + fuckinginside.child("user").getValue());
+                                            //Log.d("childrencount", "onChildAdded: " + fuckinginside.getChildrenCount());
+
+                                            if (fuckinginside.child("user").getValue().equals(commonSharePreference.read("username")) && fuckinginside.child("id").getValue().equals(commonSharePreference.read("id"))){
+
+                                                Log.d("TAG", "onChildAdded: fuckyou");
+                                                break ;
+
+                                            }else {
+                                                count += 1;
+                                                break ;
+                                            }
+
+                                        }
+                                        if (count == listposition+1){
+                                            key = userdisplay.getKey();
+                                            check = 1;
+                                            break outkeyloop;
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+
+
+
+                    }else if (userdisplay.child("name").getValue().equals(commonSharePreference.read("username"))){
+                        sameacccount = dataSnapshot.getChildrenCount();
                     }
-                    Log.d("CKSize", "onChildAdded: " + listtodisplay.size());
 
-                    count+=1;
+
+
+                    Log.d("listsize chk", "onChildAdded: " + listtodisplay.size() + "  " + sameacccount);
+                    if (listtodisplay.size() == allnodecount - sameacccount) {
+
+                        Log.d("check in", "onChildAdded: in" + key);
+//                        if (sameacccount <= 2){
+                            outerloop:
+                        for (int j = 0 ; j < listtodisplay.size(); j++) {
+
+                            Log.d("dddd", "onChildAdded: in");
+
+                            for (int i = 0; i < listtodisplay.get(j).getDriverCourse().size(); i++) {
+
+                                for (int k = 0; k <listtodisplay.get(j).getDriverCourse().get(i).getSeat().size();k++){
+
+                                    Log.d("checkdisplay", "onChildAdded: "+listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser()) ;
+
+                                    Log.d("checkdisplay", "onChildAdded: "+listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId()) ;
+
+                                    if (listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().equals(commonSharePreference.read("username").toString()) &&
+                                            listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().equals(commonSharePreference.read("id").toString())) {
+
+                                        Log.d("check id2", "onChildAdded: in" + listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().toString() + "    "
+                                                +  listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().toString() + listtodisplay.get(j).getName());
+
+                                        listtodisplay.remove(j);
+
+                                        display.add(listtodisplay.get(j));
+
+                                        break outerloop;
+
+                                    }
+
+
+                                }
+
+
+                            }
+
+                        }
+//                        }
+
+
+
+                        Log.d("list", "onChildAdded: " + listtodisplay.size());
+
+                        start.setText(listtodisplay.get(listposition).getDriverCourse().get(0).getStart());
+                        des.setText(listtodisplay.get(listposition).getDriverCourse().get(0).getDestination());
+                        contact.setText(listtodisplay.get(listposition).getDriverCourse().get(0).getContact());
+                        time.setText(listtodisplay.get(listposition).getDriverCourse().get(0).getTime());
+                        date.setText(listtodisplay.get(listposition).getDriverCourse().get(0).getDate());
+                        seatAmount.setText(String.valueOf(listtodisplay.get(listposition).getDriverCourse().get(0).getSeatAmount()));
+                        seatCost.setText(String.valueOf(listtodisplay.get(listposition).getDriverCourse().get(0).getSeatCost()));
+                        carBrand.setText(listtodisplay.get(listposition).getDriverCourse().get(0).getCarbrand());
+                        carModel.setText(listtodisplay.get(listposition).getDriverCourse().get(0).getModel());
+                        licenseplate.setText(listtodisplay.get(listposition).getDriverCourse().get(0).getPlate());
+                        color.setText(listtodisplay.get(listposition).getDriverCourse().get(0).getColor());
+                        username.setText(listtodisplay.get(listposition).getName());
+
+                        //Log.d("CKSize", "onChildAdded: " + listtodisplay.size() + "  " + listposition);
+
+                        Button applyButton = rootView.findViewById(R.id.userSelecctApply);
+                        applyButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                seat = new seat();
+                                seat.setId(listtodisplay.get(listposition).getId());
+                                seat.setUser(listtodisplay.get(listposition).getName());
+
+                                DatabaseReference updateValue = FirebaseDatabase.getInstance().getReference().child("User").child(listtodisplay.get(listposition).getName())
+                                        .child(key);
+                                Log.d("check", "onClick: " + key + "   ");
+                                for (int index = 0 ;index < listtodisplay.get(listposition).getDriverCourse().get(0).getSeat().size();index++){
+                                    Log.d("user select index", "onClick: " + index);
+                                    if (listtodisplay.get(listposition).getDriverCourse().get(0).getSeat().get(index).getId().equals("") && listtodisplay.get(0).getDriverCourse().get(0).getSeat().get(index).getUser().equals("")){
+                                        listtodisplay.get(listposition).getDriverCourse().get(0).getSeat().get(index).setId(commonSharePreference.read("id").toString());
+                                        listtodisplay.get(listposition).getDriverCourse().get(0).getSeat().get(index).setUser(commonSharePreference.read("username").toString());
+
+                                        break;
+                                    }
+                                }
+
+                                updateValue.setValue(listtodisplay.get(listposition));
+
+                                backToHome();
+                            }
+                        });
+
+                    }
                 }
-
-
-
-
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -126,20 +283,12 @@ public class userSelectItemFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
 
-        Button applyButton = rootView.findViewById(R.id.userSelecctApply);
-        applyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference updateValue = FirebaseDatabase.getInstance().getReference().child("User").child(commonSharePreference.read("username").toString())
-                        .child(key);
-               listtodisplay.get(0).getDriverCourse().get(0).setSeatAmount(listtodisplay.get(0).getDriverCourse().get(0).getSeatAmount()-1);
-                updateValue.setValue(listtodisplay.get(0));
 
-                backToHome();
-            }
-        });
+
+
 
     }
 

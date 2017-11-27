@@ -39,6 +39,7 @@ import kmitl.proj.jittakan58070012.takemehomedemo.R;
 import kmitl.proj.jittakan58070012.takemehomedemo.User_Drawer_option;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.Constant;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.NewDrivecourse;
+import kmitl.proj.jittakan58070012.takemehomedemo.model.seat;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.userProfile;
 
 /**
@@ -60,6 +61,8 @@ public class addDestinationPopupDialogFragment extends Fragment{
     private DatabaseReference userRef;
     private NewDrivecourse newDrivecourse;
     private String key;
+    private seat seat;
+    private List<seat> listseat;
     private userProfile userProfile;
 
 
@@ -161,7 +164,9 @@ public class addDestinationPopupDialogFragment extends Fragment{
     public void apply(View v){
 
         newDrivecourse = new NewDrivecourse();
+        seat = new seat();
 
+        int count = 0;
 
         EditText start = v.findViewById(R.id.StartCreate);
         EditText des  = v.findViewById(R.id.DestinationCreate);
@@ -190,7 +195,7 @@ public class addDestinationPopupDialogFragment extends Fragment{
 
         userProfile = new userProfile();
 
-        Log.d("in", "apply: "+commonSharePreference.read("createstate"));
+        //Log.d("in", "apply: "+commonSharePreference.read("createstate"));
         if (commonSharePreference.read("createstate").toString().equals("create")){
             userRef = FirebaseDatabase.getInstance().getReference("User");
             userRef.addValueEventListener(new ValueEventListener() {
@@ -217,19 +222,21 @@ public class addDestinationPopupDialogFragment extends Fragment{
             userRef = FirebaseDatabase.getInstance().getReference("User");
             Constant.createState = "create";
             commonSharePreference.save("createstate","create");
-            Log.d("create", "onDataChange: adddrifrag");
-            Log.d("CK LINK ID", "apply: " + User_Drawer_option.userProfile.getId() + "  " + User_Drawer_option.userProfile.getLink());
+            //Log.d("create", "onDataChange: adddrifrag");
+            //Log.d("CK LINK ID", "apply: " + User_Drawer_option.userProfile.getId() + "  " + User_Drawer_option.userProfile.getLink());
             newDrivecourseslist = new ArrayList<>();
+            listseat = new ArrayList<>();
+            for (int i= 0;i < newDrivecourse.getSeatAmount();i++){
+                seat.setUser("");
+                seat.setId("");
+                listseat.add(seat);
+            }
+            newDrivecourse.setSeat(listseat);
             newDrivecourseslist.add(newDrivecourse);
             User_Drawer_option.userProfile.setDriverCourse(newDrivecourseslist);
             userRef.child(commonSharePreference.read("username").toString()).push().setValue(User_Drawer_option.userProfile);
 
         }
-
-
-
-
-
     }
 
 

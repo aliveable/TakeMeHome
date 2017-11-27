@@ -123,15 +123,16 @@ public class DriverFragment extends Fragment{
 
                 for (DataSnapshot userdata : dataSnapshot.getChildren()){
                    // Log.d("check", "onDataChange: " + userdata.child(commonSharePreference.read("username").toString()).getKey().toString());
-                    Log.d("Check2", "onDataChange: " + userdata.toString());
-                    Log.d("check Key", "onChildAdded: "+userdata.getKey().toString());
-                    Log.d("check name", "onChildAdded: " + userdata.child("name").getValue());
-                    Log.d("check size", "onChildAdded: ");
+                    //Log.d("Check2", "onDataChange: " + userdata.toString());
+                    //Log.d("check Key", "onChildAdded: "+userdata.getKey().toString());
+                    //Log.d("check name", "onChildAdded: " + userdata.child("name").getValue());
+                    //Log.d("check size", "onChildAdded: ");
                     //Log.d("List Size", "onDataChange: " + userdata.getValue(User_Drawer_option.userProfile.getClass()));
                     if (userdata.child("name").getValue().toString().equals(key)) {
                         User_Drawer_option.userProfile = userdata.getValue(User_Drawer_option.userProfile.getClass());
                         listtodisplay.add(User_Drawer_option.userProfile);
-                        Log.d("size", "onDataChange: " + User_Drawer_option.userProfile.getDriverCourse().size());
+
+                        //Log.d("size", "onDataChange: " + User_Drawer_option.userProfile.getDriverCourse().size());
 
                     }
 

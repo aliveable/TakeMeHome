@@ -3,7 +3,6 @@ package kmitl.proj.jittakan58070012.takemehomedemo.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,15 +16,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import kmitl.proj.jittakan58070012.takemehomedemo.CommonSharePreference;
 import kmitl.proj.jittakan58070012.takemehomedemo.R;
-import kmitl.proj.jittakan58070012.takemehomedemo.User_Drawer_option;
-import kmitl.proj.jittakan58070012.takemehomedemo.adapter.dataAdapter;
 import kmitl.proj.jittakan58070012.takemehomedemo.adapter.allAdapter;
+import kmitl.proj.jittakan58070012.takemehomedemo.adapter.dataAdapter;
+import kmitl.proj.jittakan58070012.takemehomedemo.adapter.selectAdapter;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.userProfile;
 
 /**
@@ -40,6 +40,8 @@ public class HomeFragment extends Fragment {
     private userProfile userprofile;
     private List<userProfile> listtodisplay;
     private CommonSharePreference commonSharePreference;
+    private long countsame;
+    private long allnodecount;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -57,29 +59,85 @@ public class HomeFragment extends Fragment {
     }
 
     public void displayall(View rootView){
-
+        this.countsame = 0;
+        this.allnodecount = 0;
         listtodisplay = new ArrayList<>();
         userprofile = new userProfile();
         
-        recyclerView = rootView.findViewById(R.id.listHome);
+        recyclerView = rootView.findViewById(R.id.showItemlistHome);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         Log.d("HomeFragCK Name1", "displayall: " + commonSharePreference.read("username"));
 
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot user : dataSnapshot.getChildren()){
+                    Log.d("countsnapsingle", "onDataChange: " + dataSnapshot.child(user.getKey()).getChildrenCount());
+                    allnodecount += dataSnapshot.child(user.getKey()).getChildrenCount();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         userRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 
                 for (DataSnapshot userdata : dataSnapshot.getChildren()){
-                    Log.d("HomeFragCK Name", "displayall: " + userdata.getKey());
-                    Log.d("checkMultiuser", "onChildAdded: "+ userdata.child("name").getValue() + "   " + commonSharePreference.read("username"));
+                    //Log.d("HomeFragCK Name", "displayall: " + userdata.getKey());
+                    //Log.d("checkMultiuser", "onChildAdded: "+ userdata.child("name").getValue() + "   " + commonSharePreference.read("username"));
                     if (!userdata.child("name").getValue().equals(commonSharePreference.read("username"))){
+
                         userprofile = userdata.getValue(userprofile.getClass());
                         listtodisplay.add(userprofile);
+
+                        Log.d("save", "onChildAdded: " + userdata.getValue());
+                        Log.d("checksize", "onChildAdded: " + listtodisplay.size());
+                    }else if (userdata.child("name").getValue().equals(commonSharePreference.read("username"))){
+                        countsame = dataSnapshot.getChildrenCount();
+                    }
+
+
+                    if (listtodisplay.size() == allnodecount - countsame){
+
+                        outerloop:
+                        for (int j = 0 ; j < listtodisplay.size(); j++) {
+                            Log.d("dddd", "onChildAdded: in");
+                            certer:
+                            for (int i = 0; i < listtodisplay.get(j).getDriverCourse().size(); i++) {
+
+                                for (int k = 0; k <listtodisplay.get(j).getDriverCourse().get(i).getSeat().size();k++){
+
+                                    if (listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().equals(commonSharePreference.read("username").toString()) &&
+                                            listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().equals(commonSharePreference.read("id").toString())) {
+
+                                        Log.d("check id2", "onChildAdded: in" + listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().toString() + "    "
+                                                +  listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().toString());
+                                        listtodisplay.remove(j);
+
+                                    }
+
+
+                                }
+
+
+                            }
+
+                        }
                     }
 
                 }
                 Log.d("check Multiuser2", "onChildAdded" + listtodisplay.size());
+
+                for (userProfile data : listtodisplay){
+                    Log.d("checkinsidelist", "onChildAdded: " + data.getName());
+                }
+
                 allAdapter = new allAdapter((AppCompatActivity) getActivity(), listtodisplay);
                 recyclerView.setAdapter(allAdapter);
             }
@@ -106,17 +164,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void setRecyclerViewlistener(){
-        recyclerView = rootView.findViewById(R.id.listHome);
-    }
 
-    public void recyclerOnclick(){
-        kmitl.proj.jittakan58070012.takemehomedemo.adapter.allAdapter.cardViewsend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("sss", "onClick: ");
-            }
-        });
-    }
 
 }

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "139781206796-8a6jog5lh844fcmb1on4i6qdtm7s5n11.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kmitl.proj.jittakan58070012.takemehomedemo",
+            "certificate_hash": "65a4e5ad744d0e7873a74e05f0080f4bf84aea05"
+          }
+        },
+        {
           "client_id": "139781206796-ekdi77ui5b3mlk22kcf7i8pk17fdot5v.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

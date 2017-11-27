@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import kmitl.proj.jittakan58070012.takemehomedemo.fragment.BookFragment;
 import kmitl.proj.jittakan58070012.takemehomedemo.fragment.DriverFragment;
 import kmitl.proj.jittakan58070012.takemehomedemo.fragment.HomeFragment;
 import kmitl.proj.jittakan58070012.takemehomedemo.model.userProfile;
@@ -67,6 +68,14 @@ public class User_Drawer_option extends AppCompatActivity
 
     }
 
+    public void initialFragmentBook(){
+        fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag("home");
+
+        fragmentManager.beginTransaction().remove(fragment).replace(R.id.FragmentContainer,new BookFragment()).addToBackStack(null).commit();
+
+    }
+
 
     private TextView mTextMessage;
 
@@ -85,6 +94,7 @@ public class User_Drawer_option extends AppCompatActivity
                     mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_notifications:
+                    initialFragmentBook();
                     mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
@@ -111,7 +121,8 @@ public class User_Drawer_option extends AppCompatActivity
 
         userProfile = new userProfile();
         if (commonSharePreference.read("CreateFragState").equals("First")){
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+            commonSharePreference.read("CreateFragState").equals("Sec");
             initialFragmentHome();
         }
 
@@ -180,6 +191,7 @@ public class User_Drawer_option extends AppCompatActivity
 
     public void setid(String id){
         userProfile.setId(id);
+        commonSharePreference.save("id",userProfile.getId());
     }
 
     public void setLink(String link){

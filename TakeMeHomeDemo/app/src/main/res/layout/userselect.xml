@@ -75,7 +75,8 @@
                     android:hint="@string/start_on_create"
                     android:inputType="textPersonName"
                     tools:layout_editor_absoluteX="72dp"
-                    tools:layout_editor_absoluteY="27dp" />
+                    tools:layout_editor_absoluteY="27dp"
+                    android:focusable="false"/>
             </LinearLayout>
 
             <LinearLayout
@@ -91,7 +92,8 @@
                     android:drawableStart="@mipmap/ic_flag_black_48dp"
                     android:ems="10"
                     android:hint="@string/destination_on_create"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:focusable="false"/>
             </LinearLayout>
 
             <LinearLayout
@@ -107,7 +109,8 @@
                     android:drawableStart="@mipmap/ic_phone_black_48dp"
                     android:ems="10"
                     android:hint="Contact"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:focusable="false"/>
             </LinearLayout>
 
             <LinearLayout
@@ -153,7 +156,8 @@
                     android:drawableStart="@drawable/passenger"
                     android:ems="10"
                     android:hint="Seat Amount"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:focusable="false"/>
 
                 <EditText
                     android:id="@+id/userSelecctseatCost"
@@ -163,7 +167,8 @@
                     android:drawableStart="@drawable/baht"
                     android:ems="10"
                     android:hint="SeatCost"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:focusable="false"/>
             </LinearLayout>
 
             <LinearLayout
@@ -179,7 +184,8 @@
                     android:drawableStart="@drawable/caradd"
                     android:ems="10"
                     android:hint="Car brand"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:focusable="false"/>
 
                 <EditText
                     android:id="@+id/userSelecctcarModel"
@@ -189,7 +195,8 @@
                     android:drawableStart="@drawable/model"
                     android:ems="10"
                     android:hint="Model"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:focusable="false"/>
             </LinearLayout>
 
             <LinearLayout
@@ -205,7 +212,8 @@
                     android:drawableStart="@drawable/plate"
                     android:ems="10"
                     android:hint="Plate"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:focusable="false"/>
 
                 <EditText
                     android:id="@+id/userSelecctColor"
@@ -215,7 +223,8 @@
                     android:drawableStart="@drawable/color"
                     android:ems="10"
                     android:hint="Color"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:focusable="false"/>
             </LinearLayout>
 
             <LinearLayout

@@ -113,7 +113,7 @@
                     android:ems="10"
                     android:hint="Seat Amount"
                     android:drawableStart="@drawable/passenger"
-                    android:inputType="textPersonName" />
+                    android:inputType="number" />
 
                 <EditText
                     android:id="@+id/seatCost"
@@ -123,7 +123,7 @@
                     android:ems="10"
                     android:hint="SeatCost"
                     android:drawableStart="@drawable/baht"
-                    android:inputType="textPersonName" />
+                    android:inputType="number"/>
             </LinearLayout>
 
             <LinearLayout
