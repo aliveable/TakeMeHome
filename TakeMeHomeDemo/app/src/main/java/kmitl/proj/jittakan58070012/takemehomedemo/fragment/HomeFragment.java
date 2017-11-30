@@ -116,13 +116,13 @@ public class HomeFragment extends Fragment {
                                 Log.d("check in side seat", "onChildAdded: outloop");
                                 countfull = 0;
                                 for (int k = 0; k <listtodisplay.get(j).getDriverCourse().get(i).getSeat().size();k++){
-                                    Log.d("check in side seat", "onChildAdded: " +listtodisplay.get(j).getName()+ " "+ listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId() + " " + listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser());
-
+                                   // Log.d("check in side seat", "onChildAdded: " +listtodisplay.get(j).getName()+ " "+ listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId() + " " + listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser());
+                                    Log.d("checksameremove", "onChildAdded: Node: "+listtodisplay.get(j).getName() +"   " +listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser() + " value:" + commonSharePreference.read("username").toString());
                                     if (listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().equals(commonSharePreference.read("username").toString()) &&
                                             listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().equals(commonSharePreference.read("id").toString())) {
 
-                                        //Log.d("check id2", "onChildAdded: in" + listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().toString() + "    "
-                                          //      +  listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().toString());
+                                        Log.d("checkid2", "onChildAdded: in" + listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().toString() + "    "
+                                               +  listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().toString());
                                         listtodisplay.remove(j);
                                     }
                                     if(!listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().equals("") &&

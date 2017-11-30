@@ -242,7 +242,8 @@ public class userSelectItemFragment extends Fragment {
                                 Log.d("check", "onClick: " + key + "   ");
                                 for (int index = 0 ;index < listtodisplay.get(listposition).getDriverCourse().get(0).getSeat().size();index++){
                                     Log.d("user select index", "onClick: " + index);
-                                    if (listtodisplay.get(listposition).getDriverCourse().get(0).getSeat().get(index).getId().equals("") && listtodisplay.get(0).getDriverCourse().get(0).getSeat().get(index).getUser().equals("")){
+                                    if (listtodisplay.get(listposition).getDriverCourse().get(0).getSeat().get(index).getId().equals("")
+                                            && listtodisplay.get(0).getDriverCourse().get(0).getSeat().get(index).getUser().equals("")){
                                         listtodisplay.get(listposition).getDriverCourse().get(0).getSeat().get(index).setId(commonSharePreference.read("id").toString());
                                         listtodisplay.get(listposition).getDriverCourse().get(0).getSeat().get(index).setUser(commonSharePreference.read("username").toString());
 
