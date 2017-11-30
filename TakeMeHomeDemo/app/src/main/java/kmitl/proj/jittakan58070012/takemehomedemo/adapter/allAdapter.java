@@ -88,7 +88,7 @@ public class allAdapter extends RecyclerView.Adapter<allHolder>{
                         count += 1;
 
                 }
-                if (this.newDrivecourseList.get(position).getDriverCourse().get(0).getSeatAmount() == this.count){
+                if (this.count == 0){
                     allholder.seatLeft.setText("Empty Seat");
                 }else {
                     allholder.seatLeft.setText(this.count+" Seat Left");

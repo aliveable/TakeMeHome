@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
     private CommonSharePreference commonSharePreference;
     private long countsame;
     private long allnodecount;
+    private int countfull;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -61,6 +62,7 @@ public class HomeFragment extends Fragment {
     public void displayall(View rootView){
         this.countsame = 0;
         this.allnodecount = 0;
+        this.countfull = 0;
         listtodisplay = new ArrayList<>();
         userprofile = new userProfile();
         
@@ -90,7 +92,7 @@ public class HomeFragment extends Fragment {
                 
                 for (DataSnapshot userdata : dataSnapshot.getChildren()){
                     //Log.d("HomeFragCK Name", "displayall: " + userdata.getKey());
-                    //Log.d("checkMultiuser", "onChildAdded: "+ userdata.child("name").getValue() + "   " + commonSharePreference.read("username"));
+                    Log.d("checkMultiuser", "onChildAdded: "+ userdata.child("name").getValue() + "   " + commonSharePreference.read("username"));
                     if (!userdata.child("name").getValue().equals(commonSharePreference.read("username"))){
 
                         userprofile = userdata.getValue(userprofile.getClass());
@@ -110,17 +112,30 @@ public class HomeFragment extends Fragment {
                             Log.d("dddd", "onChildAdded: in");
                             certer:
                             for (int i = 0; i < listtodisplay.get(j).getDriverCourse().size(); i++) {
-
+                                Log.d("check in side seat", "onChildAdded: outloop");
                                 for (int k = 0; k <listtodisplay.get(j).getDriverCourse().get(i).getSeat().size();k++){
+                                    Log.d("check in side seat", "onChildAdded: " +listtodisplay.get(j).getName()+ " "+ listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId() + " " + listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser());
 
                                     if (listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().equals(commonSharePreference.read("username").toString()) &&
                                             listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().equals(commonSharePreference.read("id").toString())) {
 
-                                        Log.d("check id2", "onChildAdded: in" + listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().toString() + "    "
-                                                +  listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().toString());
+                                        //Log.d("check id2", "onChildAdded: in" + listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().toString() + "    "
+                                          //      +  listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().toString());
                                         listtodisplay.remove(j);
 
                                     }
+                                    if(listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().equals("") &&
+                                            listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().equals("") ) {
+
+                                        countfull += 1;
+                                        if (countfull == listtodisplay.get(j).getDriverCourse().get(i).getSeat().size()){
+                                            Log.d("ssss", "onChildAdded: "  + countfull + "   " + listtodisplay.get(j).getDriverCourse().get(i).getSeat().size());
+                                            listtodisplay.remove(j);
+                                            countfull = 0;
+                                            break certer;
+                                        }
+                                    }
+
 
 
                                 }
