@@ -136,9 +136,6 @@ public class HomeFragment extends Fragment {
                                             break certer;
                                         }
                                     }
-
-
-
                                 }
 
 
