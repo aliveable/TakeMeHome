@@ -46,6 +46,7 @@ public class userSelectItemFragment extends Fragment {
     private String key;
     private seat seat;
     private int check;
+    private int countfull;
 
     public userSelectItemFragment newInstance(int pos) {
 
@@ -119,8 +120,8 @@ public class userSelectItemFragment extends Fragment {
                 outloop:
                 for (DataSnapshot userdisplay : dataSnapshot.getChildren()){
 
-//                    Log.d("Count CHK", "onChildAdded: " + count+ " " + listposition);
-//                    Log.d("check user", "onChildAdded: " +userdisplay.getValue() + "   " + commonSharePreference.read("username"));
+                    Log.d("Count CHK", "onChildAdded: " + count+ " " + listposition);
+                    Log.d("check user", "onChildAdded: " +userdisplay.getValue() + "   " + commonSharePreference.read("username"));
 
                     if (!userdisplay.child("name").getValue().equals(commonSharePreference.read("username"))){
                         //Log.d("snapcount", "onChildAdded: " + dataSnapshot.getChildrenCount());
@@ -132,38 +133,13 @@ public class userSelectItemFragment extends Fragment {
 
                         Log.d("loopkeycheck", "onChildAdded: "+"Key :" + key+"  "+ userdisplay.getKey() + "   Size: " + listtodisplay.size());
 
-                        if (check == 0 ){
-                            outkeyloop:
-                            for (DataSnapshot seat: userdisplay.getChildren()){
-                                Log.d("check", "onChildAdded: " + seat.getValue());
-                                for (DataSnapshot seatin : seat.getChildren()){
 
-                                    for (DataSnapshot seatmoreinside : seatin.getChildren()){
-
-                                        for (DataSnapshot fuckinginside : seatmoreinside.getChildren()) {
-                                            //Log.d("check3", "onChildAdded: " + fuckinginside.child("user").getValue());
-                                            //Log.d("childrencount", "onChildAdded: " + fuckinginside.getChildrenCount());
-
-                                            if (fuckinginside.child("user").getValue().equals(commonSharePreference.read("username")) && fuckinginside.child("id").getValue().equals(commonSharePreference.read("id"))){
-
-                                                Log.d("TAG", "onChildAdded: fuckyou");
-                                                break ;
-
-                                            }else {
-                                                count += 1;
-                                                break ;
-                                            }
-
-                                        }
-                                        if (count == listposition+1){
-                                            key = userdisplay.getKey();
-                                            check = 1;
-                                            break outkeyloop;
-                                        }
-
-                                    }
-                                }
-                            }
+                        if (userdisplay.child("name").getValue().equals(allAdapter.userCheck.getName())
+                                && userdisplay.child("driverCourse").child("0").child("plate").getValue().equals(allAdapter.userCheck.getDriverCourse().get(0).getPlate())
+                                && userdisplay.child("driverCourse").child("0").child("carbrand").getValue().equals(allAdapter.userCheck.getDriverCourse().get(0).getCarbrand())
+                                && userdisplay.child("driverCourse").child("0").child("model").getValue().equals(allAdapter.userCheck.getDriverCourse().get(0).getModel())){
+                            Log.d("checkPlate", "onChildAdded: " + allAdapter.userCheck.getDriverCourse().get(0).getPlate() + "   " + userdisplay.getKey());
+                            key = userdisplay.getKey();
                         }
 
 
@@ -177,15 +153,22 @@ public class userSelectItemFragment extends Fragment {
                     Log.d("listsize chk", "onChildAdded: " + listtodisplay.size() + "  " + sameacccount);
                     if (listtodisplay.size() == allnodecount - sameacccount) {
 
+                        Log.d("checkalladaplist", "onChildAdded: " + allAdapter.userCheck.getName());
+                        Log.d("checkalladaplist", "onChildAdded: " + allAdapter.userCheck.getId());
+                        Log.d("checkalladaplist", "onChildAdded: " + allAdapter.userCheck.getLink());
+                        Log.d("check alladap list", "onChildAdded: " + allAdapter.userCheck.getDriverCourse().get(0).getPlate());
+
+
+
                         Log.d("check in", "onChildAdded: in" + key);
 //                        if (sameacccount <= 2){
                             outerloop:
                         for (int j = 0 ; j < listtodisplay.size(); j++) {
 
                             Log.d("dddd", "onChildAdded: in");
-
+                            certer:
                             for (int i = 0; i < listtodisplay.get(j).getDriverCourse().size(); i++) {
-
+                                countfull = 0;
                                 for (int k = 0; k <listtodisplay.get(j).getDriverCourse().get(i).getSeat().size();k++){
 
                                     Log.d("checkdisplay", "onChildAdded: "+listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser()) ;
@@ -200,10 +183,22 @@ public class userSelectItemFragment extends Fragment {
 
                                         listtodisplay.remove(j);
 
-                                        display.add(listtodisplay.get(j));
+
 
                                         break outerloop;
 
+                                    }
+
+                                    if(!listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().equals("") &&
+                                            !listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().equals("") ) {
+
+                                        countfull += 1;
+                                        if (countfull == listtodisplay.get(j).getDriverCourse().get(i).getSeat().size()){
+                                            Log.d("ssss", "onChildAdded: "  + countfull + "   " + listtodisplay.get(j).getDriverCourse().get(i).getSeat().size());
+                                            listtodisplay.remove(j);
+                                            countfull = 0;
+                                            break certer;
+                                        }
                                     }
 
 

@@ -52,6 +52,7 @@ public class allAdapter extends RecyclerView.Adapter<allHolder>{
     private View view;
     public static CardView cardViewsend;
     public static int position;
+    public static userProfile userCheck;
     //private RecyclerView recyclerView;
     int count;
 
@@ -102,7 +103,7 @@ public class allAdapter extends RecyclerView.Adapter<allHolder>{
         allholder.clicktoview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getPosition(position);
+                getPosition(position, newDrivecourseList.get(position));
                 Log.d("position", "onClick: "+position);
             }
         });
@@ -117,8 +118,9 @@ public class allAdapter extends RecyclerView.Adapter<allHolder>{
         return this.newDrivecourseList.size();
     }
 
-    public void getPosition(int pos){
+    public void getPosition(int pos, userProfile userProfile){
          this.position = pos;
+         this.userCheck = userProfile;
 
       FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
       fragmentManager.beginTransaction().replace(R.id.FragmentContainer, new userSelectItemFragment()).commit();
