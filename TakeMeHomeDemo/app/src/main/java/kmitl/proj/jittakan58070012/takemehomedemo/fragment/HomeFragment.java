@@ -86,6 +86,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
         userRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -124,15 +125,15 @@ public class HomeFragment extends Fragment {
                                         listtodisplay.remove(j);
 
                                     }
-                                    if(listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().equals("") &&
-                                            listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().equals("") ) {
+                                    if(!listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getUser().equals("") &&
+                                            !listtodisplay.get(j).getDriverCourse().get(i).getSeat().get(k).getId().equals("") ) {
 
                                         countfull += 1;
                                         if (countfull == listtodisplay.get(j).getDriverCourse().get(i).getSeat().size()){
                                             Log.d("ssss", "onChildAdded: "  + countfull + "   " + listtodisplay.get(j).getDriverCourse().get(i).getSeat().size());
                                             listtodisplay.remove(j);
                                             countfull = 0;
-                                            break certer;
+                                            break ;
                                         }
                                     }
 

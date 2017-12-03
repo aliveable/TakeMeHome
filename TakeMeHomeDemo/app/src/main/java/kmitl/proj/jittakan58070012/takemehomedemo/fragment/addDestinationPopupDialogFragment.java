@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,15 +66,13 @@ public class addDestinationPopupDialogFragment extends Fragment{
     private List<seat> listseat;
     private userProfile userProfile;
 
+    EditText seatAmount  ;
+    EditText seatCost  ;
 
-    public static addDestinationPopupDialogFragment newInstance() {
+    private String stringAmount;
+    private String stringSeatCost;
 
-        Bundle args = new Bundle();
 
-        addDestinationPopupDialogFragment fragment = new addDestinationPopupDialogFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
 
     @Nullable
@@ -99,17 +98,24 @@ public class addDestinationPopupDialogFragment extends Fragment{
             }
         });
 
-        Button apply_BTN = rootView.findViewById(R.id.Apply);
-        apply_BTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        seatAmount  = rootView.findViewById(R.id.seatAmount);
+        seatCost  = rootView.findViewById(R.id.seatCost);
+
+        this.stringAmount = seatAmount.getText().toString();
+        this.stringSeatCost = seatAmount.getText().toString();
+
+
+            Button apply_BTN = rootView.findViewById(R.id.Apply);
+            apply_BTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
                     apply(rootView);
                     backToDriver();
 
 
-            }
-        });
+                }
+            });
 
         Log.d("checkaddDia", "onCreateView: "+commonSharePreference.read("username"));
 
@@ -168,6 +174,8 @@ public class addDestinationPopupDialogFragment extends Fragment{
 
         int count = 0;
 
+
+
         EditText start = v.findViewById(R.id.StartCreate);
         EditText des  = v.findViewById(R.id.DestinationCreate);
         EditText contact  =v.findViewById(R.id.Contact);
@@ -192,6 +200,8 @@ public class addDestinationPopupDialogFragment extends Fragment{
         newDrivecourse.setModel(carModel.getText().toString());
         newDrivecourse.setPlate(licenseplate.getText().toString());
         newDrivecourse.setColor(color.getText().toString());
+
+
 
         userProfile = new userProfile();
 
