@@ -120,11 +120,13 @@ public class User_Drawer_option extends AppCompatActivity
 
 
         userProfile = new userProfile();
-        if (commonSharePreference.read("CreateFragState").equals("First")){
-
-            commonSharePreference.read("CreateFragState").equals("Sec");
-            initialFragmentHome();
-        }
+        Log.d("Checkstate", "onCreate: " + commonSharePreference.read("CreateFragState"));
+        initialFragmentHome();
+//        if (commonSharePreference.read("CreateFragState").equals("First")){
+//
+//            commonSharePreference.read("CreateFragState").equals("Sec");
+//            initialFragmentHome();
+//        }
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
